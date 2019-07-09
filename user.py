@@ -1,4 +1,6 @@
 import time
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
 
 
 class User:
@@ -29,8 +31,9 @@ class User:
         return element.text
 
     def get_followers(self, driver, max_followers):
-        url = "https://www.instagram.com/" + self.name
-        driver.get(url)
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
         time.sleep(0.5)
         follower_button = driver.find_elements_by_class_name("-nal3")[1]
         follower_button.click()
@@ -44,18 +47,21 @@ class User:
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
             time.sleep(0.5)
             if len(ls) > max_followers:
-                driver.find_elements_by_class_name("dCJp8").click()
                 break
         user_list = []
         for ele in ls:
             txt = ele.text
             user_name = txt.split('\n')[0]
             user_list.append(User(user_name))
+        webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
         return user_list
 
     def get_following(self, driver, max_followings):
-        url = "https://www.instagram.com/" + self.name
-        driver.get(url)
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            print("page refreshed!")
+            print(driver.current_url, url)
+            driver.get(url)
         time.sleep(0.5)
         followings_button = driver.find_elements_by_class_name("-nal3")[2]
         followings_button.click()
@@ -64,7 +70,7 @@ class User:
         while True:
             ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
             if len(ls) == n_prev:
-                driver.find_elements_by_class_name("dCJp8").click()
+                driver.find_element_by_class_name("dCJp8").click()
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
@@ -76,6 +82,7 @@ class User:
             txt = ele.text
             user_name = txt.split('\n')[0]
             user_list.append(User(user_name))
+        webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
         return user_list
 
 

@@ -6,13 +6,15 @@ class Post:
         self.url = url
 
     def like(self, driver):
-        driver.get(self.url)
+        if driver.current_url != self.url:
+            driver.get(self.url)
         button = driver.find_element_by_class_name("dCJp8")
         button.click()
         return None
 
     def comment(self, driver, content):
-        driver.get(self.url)
+        if driver.current_url != self.url:
+            driver.get(self.url)
         block = driver.find_element_by_class_name("Ypffh")
         block.click()
         time.sleep(1.0)
@@ -20,7 +22,8 @@ class Post:
         return None
 
     def number_of_likes(self, driver):
-        driver.get(self.url)
+        if driver.current_url != self.url:
+            driver.get(self.url)
         likes = driver.find_element_by_class_name("zV_Nj")
         n = likes.text.split()[0]
         return n
