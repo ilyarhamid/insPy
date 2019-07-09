@@ -1,1 +1,1 @@
-# inspy
+# pynstagram
