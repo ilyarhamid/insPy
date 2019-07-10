@@ -51,7 +51,7 @@ class User:
         posts = driver.find_elements_by_class_name("-nal3")[0]
         return posts.text.split()[0]
 
-    def get_followers(self, driver, max_followers):
+    def get_followers(self, driver, max_followers=100000):
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
@@ -77,11 +77,9 @@ class User:
         webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
         return user_list
 
-    def get_following(self, driver, max_followings):
+    def get_following(self, driver, max_followings=100000):
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
-            print("page refreshed!")
-            print(driver.current_url, url)
             driver.get(url)
         time.sleep(0.5)
         followings_button = driver.find_elements_by_class_name("-nal3")[2]
@@ -91,7 +89,6 @@ class User:
         while True:
             ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
             if len(ls) == n_prev:
-                driver.find_element_by_class_name("dCJp8").click()
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
@@ -126,7 +123,26 @@ class OwnAccount(User):
         return None
 
     def clean_followers(self, driver):
-        pass
+        follower_list = []
+        following_list = []
+        following_list_obj = self.get_following(driver)
+        follower_list_obj = self.get_followers(driver)
+        for u in follower_list_obj:
+            follower_list.append(u.name)
+
+        for u in following_list_obj:
+            following_list.append(u.name)
+
+        unfollow_list = []
+        for name in following_list:
+            if name not in follower_list:
+                unfollow_list.append(name)
+
+        print("%s out of %s accounts didn't follow you back" % (len(unfollow_list), len(following_list)))
+        for user in following_list_obj:
+            if user.name in unfollow_list:
+                user.unfollow(driver)
+        return None
 
     @staticmethod
     def read_from_file(file_path):
