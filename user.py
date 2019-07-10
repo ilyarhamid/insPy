@@ -7,16 +7,28 @@ class User:
     def __init__(self, name):
         self.name = name
 
+    def status(self,driver):
+        status_dictionary = {'Follow': False, 'Follow Back': False, 'Following': True,
+                            'Requested': True}
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
+        button = driver.find_element_by_class_name("BY3EC")
+        txt = ' '.join(button.text.split())
+        return status_dictionary[txt]
+
     def follow(self, driver):
-        url = "https://www.instagram.com/" + self.name
-        driver.get(url)
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
         button = driver.find_element_by_class_name("BY3EC")
         button.click()
         return None
 
     def unfollow(self, driver):
-        url = "https://www.instagram.com/" + self.name
-        driver.get(url)
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
         button1 = driver.find_element_by_class_name("BY3EC")
         button1.click()
         time.sleep(0.5)
@@ -25,10 +37,19 @@ class User:
         return None
 
     def get_info(self, driver):
-        url = "https://www.instagram.com/" + self.name
-        driver.get(url)
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
         element = driver.find_element_by_class_name("-vDIg")
         return element.text
+
+    def number_of_posts(self, driver):
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
+        time.sleep(0.5)
+        posts = driver.find_elements_by_class_name("-nal3")[0]
+        return posts.text.split()[0]
 
     def get_followers(self, driver, max_followers):
         url = "https://www.instagram.com/%s/" % self.name
