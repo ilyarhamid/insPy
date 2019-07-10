@@ -1,21 +1,19 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
+from inspy.post import Post
 
 class User:
     def __init__(self, name):
         self.name = name
 
     def status(self,driver):
-        status_dictionary = {'Follow': False, 'Follow Back': False, 'Following': True,
-                            'Requested': True}
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
         button = driver.find_element_by_class_name("BY3EC")
         txt = ' '.join(button.text.split())
-        return status_dictionary[txt]
+        return txt
 
     def follow(self, driver):
         url = "https://www.instagram.com/%s/" % self.name
@@ -102,6 +100,20 @@ class User:
             user_list.append(User(user_name))
         webdriver.ActionChains(driver).send_keys(Keys.ESCAPE).perform()
         return user_list
+
+    def get_posts(self, driver):
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
+        time.sleep(0.5)
+        ls = driver.find_elements_by_xpath(xpath="//div[contains(@class,'v1Nh3')]/a")
+        if len(ls) == 0:
+            return None
+        post_list = []
+        for ele in ls:
+            link = ele.get_attribute("href")
+            post_list.append(Post(link))
+        return post_list
 
 
 class OwnAccount(User):
