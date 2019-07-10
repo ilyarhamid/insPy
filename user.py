@@ -1,7 +1,7 @@
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-from inspy.post import Post
+from post import Post
 
 class User:
     def __init__(self, name):
