@@ -1,5 +1,5 @@
 import time
-from post import Post
+from insPy.post import Post
 
 
 def get_posts(driver, keyword, max_post=100):
