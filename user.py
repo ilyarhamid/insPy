@@ -64,7 +64,7 @@ class User:
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
-            time.sleep(0.5)
+            time.sleep(1.0)
             if len(ls) > max_followers:
                 break
         user_list = []
@@ -86,11 +86,12 @@ class User:
         n_prev = -1
         while True:
             ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
+            print(len(ls))
             if len(ls) == n_prev:
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
-            time.sleep(0.5)
+            time.sleep(1.0)
             if len(ls) > max_followings:
                 break
         user_list = []
