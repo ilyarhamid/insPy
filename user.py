@@ -30,7 +30,7 @@ class User:
             driver.get(url)
         button1 = driver.find_element_by_class_name("BY3EC")
         button1.click()
-        time.sleep(1.0)
+        time.sleep(2.0)
         button2 = driver.find_element_by_class_name("aOOlW")
         button2.click()
         return None
@@ -46,7 +46,7 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
-        time.sleep(1.0)
+        time.sleep(2.0)
         posts = driver.find_elements_by_class_name("-nal3")[0]
         return posts.text.split()[0]
 
@@ -54,10 +54,10 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
-        time.sleep(1.0)
+        time.sleep(2.0)
         follower_button = driver.find_elements_by_class_name("-nal3")[1]
         follower_button.click()
-        time.sleep(1.0)
+        time.sleep(2.0)
         n_prev = -1
         while True:
             ls = driver.find_elements_by_xpath("//li[@class='wo9IH']")
@@ -65,7 +65,7 @@ class User:
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
-            time.sleep(1.0)
+            time.sleep(2.0)
             if len(ls) > max_followers:
                 break
         user_list = []
@@ -80,10 +80,10 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
-        time.sleep(1.0)
+        time.sleep(2.0)
         followings_button = driver.find_elements_by_class_name("-nal3")[2]
         followings_button.click()
-        time.sleep(1.0)
+        time.sleep(2.0)
         n_prev = -1
         while True:
             ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
@@ -91,7 +91,7 @@ class User:
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
-            time.sleep(1.0)
+            time.sleep(2.0)
             if len(ls) > max_followings:
                 break
         user_list = []
@@ -106,7 +106,7 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
-        time.sleep(1.0)
+        time.sleep(2.0)
         ls = driver.find_elements_by_xpath(xpath="//div[contains(@class,'v1Nh3')]/a")
         if len(ls) == 0:
             return None
@@ -155,7 +155,7 @@ class OwnAccount(User):
         for user in following_list_obj:
             if user.name in unfollow_list:
                 user.unfollow(driver)
-                time.sleep(5.0)
+                time.sleep(60.0)
         return None
 
     @staticmethod
