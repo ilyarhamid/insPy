@@ -61,7 +61,7 @@ class User:
         time.sleep(5.0)
         n_prev = -1
         while True:
-            ls = driver.find_elements_by_xpath("//li[@class='wo9IH']")
+            ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
             if len(ls) == n_prev:
                 break
             if len(ls) > max_followers:
@@ -138,7 +138,7 @@ class OwnAccount(User):
         input_list = driver.find_elements_by_xpath("//input")
         input_list[0].send_keys(account_name)
         input_list[1].send_keys(password + '\n')
-        time.sleep(3.0)
+        time.sleep(5.0)
         return None
 
     def clean_followers(self, driver):
