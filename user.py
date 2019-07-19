@@ -54,6 +54,7 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
+
         time.sleep(5.0)
         follower_button = driver.find_elements_by_class_name("-nal3")[1]
         follower_button.click()
@@ -63,6 +64,9 @@ class User:
             ls = driver.find_elements_by_xpath("//li[@class='wo9IH']")
             if len(ls) == n_prev:
                 break
+            if len(ls) > max_followers:
+                break
+
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
             time.sleep(5.0)
@@ -88,6 +92,8 @@ class User:
         while True:
             ls = driver.find_elements_by_xpath("//div[@class='PZuss']//li")
             if len(ls) == n_prev:
+                break
+            if len(ls) > max_followings:
                 break
             n_prev = len(ls)
             driver.execute_script("arguments[0].scrollIntoView();", ls[-1])
