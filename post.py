@@ -1,4 +1,5 @@
 import time
+from insPy import user
 
 
 class Post:
@@ -11,6 +12,16 @@ class Post:
         button = driver.find_element_by_class_name("dCJp8")
         button.click()
         return None
+
+    def liked(self, driver):
+        if driver.current_url != self.url:
+            driver.get(self.url)
+        button = driver.find_element_by_xpath("//span[@class='fr66n']/button/span")
+        s = button.get_attribute("aria-label")
+        if s == "Unlike":
+            return True
+        else:
+            return False
 
     def comment(self, driver, content):
         if driver.current_url != self.url:
@@ -27,3 +38,11 @@ class Post:
         likes = driver.find_element_by_class_name("zV_Nj")
         n = likes.text.split()[0]
         return n
+
+    def get_user(self, driver):
+        if driver.current_url != self.url:
+            driver.get(self.url)
+        p = driver.find_element_by_class_name("FPmhX")
+        s = p.get_attribute("title")
+        usr = user.User(s)
+        return usr

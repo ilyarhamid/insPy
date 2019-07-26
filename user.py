@@ -115,7 +115,7 @@ class User:
         time.sleep(5.0)
         ls = driver.find_elements_by_xpath(xpath="//div[contains(@class,'v1Nh3')]/a")
         if len(ls) == 0:
-            return None
+            return []
         post_list = []
         for ele in ls:
             link = ele.get_attribute("href")
@@ -161,6 +161,7 @@ class OwnAccount(User):
         for user in following_list_obj:
             if user.name in unfollow_list:
                 user.unfollow(driver)
+                print("unfollowed %s" % user.name)
                 time.sleep(60.0)
         return None
 
