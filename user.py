@@ -46,9 +46,30 @@ class User:
         url = "https://www.instagram.com/%s/" % self.name
         if driver.current_url != url:
             driver.get(url)
-        time.sleep(3.0)
+        time.sleep(1.0)
         posts = driver.find_elements_by_class_name("-nal3")[0]
-        return posts.text.split()[0]
+        num = posts.text.split()[0]
+        return num
+
+    def number_of_followers(self, driver):
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
+
+        time.sleep(1.0)
+        follower_button = driver.find_elements_by_class_name("-nal3")[1]
+        num = follower_button.text.split()[0]
+        return num
+
+    def number_of_following(self, driver):
+        url = "https://www.instagram.com/%s/" % self.name
+        if driver.current_url != url:
+            driver.get(url)
+
+        time.sleep(1.0)
+        following_button = driver.find_elements_by_class_name("-nal3")[2]
+        num = following_button.text.split()[0]
+        return num
 
     def get_followers(self, driver, max_followers=100000):
         url = "https://www.instagram.com/%s/" % self.name
