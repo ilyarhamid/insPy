@@ -1,6 +1,4 @@
 import time
-from insPy import user
-
 
 class Post:
     def __init__(self, url):
@@ -39,10 +37,9 @@ class Post:
         n = likes.text.split()[0]
         return n
 
-    def get_user(self, driver):
+    def get_user_name(self, driver):
         if driver.current_url != self.url:
             driver.get(self.url)
         p = driver.find_element_by_class_name("FPmhX")
         s = p.get_attribute("title")
-        usr = user.User(s)
-        return usr
+        return s
